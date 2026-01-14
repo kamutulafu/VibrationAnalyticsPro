@@ -1,0 +1,7 @@
+{
+  "name": "LH Vibration Sensor Analytics Pro",
+  "description": "Professional vibration sensor data debugging and analysis tool for LH-ST series sensors with real-time waveform visualization, serial terminal, and device configuration.",
+  "requestFramePermissions": [
+    "serial"
+  ]
+}

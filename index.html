@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LH Vibration Sensor Debugger Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            overflow: hidden;
+        }
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            color: #38bdf8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+        .log-line {
+            font-size: 12px;
+            margin: 2px 0;
+            opacity: 0.8;
+            width: 80%;
+            max-width: 600px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .error-line { color: #f87171; font-weight: bold; }
+        .success-line { color: #4ade80; }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(56, 189, 248, 0.2);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    <script>
+        window.appLog = function(msg, type = 'info') {
+            const container = document.getElementById('log-container');
+            if (container) {
+                const div = document.createElement('div');
+                div.className = 'log-line ' + (type === 'error' ? 'error-line' : type === 'success' ? 'success-line' : '');
+                div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+                container.appendChild(div);
+                container.scrollTop = container.scrollHeight;
+            }
+        };
+        window.onerror = function(msg, url, line) {
+            window.appLog(`致命错误: ${msg}`, 'error');
+        };
+    </script>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "echarts": "https://esm.sh/echarts@5.5.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.344.0?deps=react@18.2.0",
+    "react/": "https://esm.sh/react@18.2.0/",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">LH 系统启动诊断...</div>
+        <div id="log-container" style="width: 100%; display: flex; flex-direction: column; align-items: center; max-height: 200px; overflow-y: auto;">
+            <script>window.appLog('加载运行时库 (v18.2.0)...', 'info');</script>
+        </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
+</body>
+</html>
